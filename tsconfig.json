@@ -13,7 +13,8 @@
     "allowJs": true,
     "strict": true,
     "noEmit": true,
-    "declaration": false
+    "declaration": false,
+    "erasableSyntaxOnly": true
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules", ".commandkit"]
