@@ -20,6 +20,9 @@ export interface IConfig {
   emoji: {
     loading: string
   }
+  channels: {
+    globalCommandLogs: Snowflake
+  }
 }
 
 
@@ -29,7 +32,7 @@ class MainConfigManager {
   public constructor() {
     this.configCache = {} as IMainConfig; // Ignoring this, it will get fetched from the DB on initialization
   }
-  
+
   public async updateCache(): Promise<void> {
     const updatedConfig = await MainConfig.findOne();
     if (!updatedConfig) throw "ERR_NO_MAINCONFIG";
@@ -38,16 +41,16 @@ class MainConfigManager {
 
   public get config(): IMainConfig {
     return _.cloneDeep(this.configCache);
-  }; 
+  };
 
   public getRolesFromDeptID(deptID: string) {
     const array = [...this.configCache.departmentRoles.entries()];
-    return array.filter(([,v]) => v.includes(deptID)).map(([v]) => v);
+    return array.filter(([, v]) => v.includes(deptID)).map(([v]) => v);
   }
 
   public async updateConfig(updatedConfig: IMainConfig): Promise<Readonly<undefined | "ERR_OUTDATED_KEYS" | "ERR_INTERNAL">> {
     await this.updateCache();
-      
+
     if (!hasDocProperty(this.config) || !hasDocProperty(updatedConfig)) return "ERR_INTERNAL";
 
     if (!_.isEqual(Object.keys(this.config._doc), Object.keys(updatedConfig._doc))) {
@@ -66,7 +69,7 @@ class DepartmentManager {
   public constructor() {
     this.deptCache = new Collection(); // Ignoring this, it will get fetched from the DB on initialization
   }
-  
+
   public async updateCache(): Promise<void> {
     const updatedDepartments = await Department.find();
     if (!updatedDepartments) return;
@@ -75,7 +78,7 @@ class DepartmentManager {
 
   public get departments(): Readonly<Collection<Snowflake, IDepartment>> {
     return new Collection(this.deptCache);
-  }; 
+  };
 
   public get departmentGuildIDs(): Readonly<Snowflake[]> {
     return this.deptCache.map(v => v.guildID);
@@ -95,4 +98,4 @@ export async function updateConfigCaches() {
   await departmentsManager.updateCache();
 }
 
-export default config;
+export default dev_config;

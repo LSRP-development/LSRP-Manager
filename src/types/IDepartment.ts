@@ -1,7 +1,8 @@
 import { Snowflake } from "discord.js";
+import { uuid } from "./uuid";
 
 export default interface IDepartment {
-  ID: string;
+  ID: uuid;
   guildID: Snowflake;
   employeeRoles: Snowflake[];
   leadershipRoles: Snowflake[];

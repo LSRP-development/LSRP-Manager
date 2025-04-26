@@ -1,4 +1,4 @@
-import { Collection, Snowflake } from "discord.js";
+import { Collection, Snowflake, SnowflakeGenerateOptions } from "discord.js";
 
 export default interface IMainConfig {
   /**
@@ -6,5 +6,12 @@ export default interface IMainConfig {
    * Value - Department ID
    */
   departmentRoles: Map<Snowflake, string>;
-  departmentLeaderRole: Snowflake;   
+  departmentLeaderRole: Snowflake;
+  devOnlyMode: boolean;
+  channels: {
+    suggestions: Snowflake;
+  }
+  roles: {
+    staff: Snowflake;
+  }
 }

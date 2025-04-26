@@ -1,1 +1,1 @@
-export type CommandCategories = "dev" | "shr" | "General";
+export type CommandCategories = "dev" | "shr" | "General" | "staff";

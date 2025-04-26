@@ -18,7 +18,8 @@
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
     "lodash": "^4.17.21",
-    "mongoose": "^8.12.2"
+    "mongoose": "^8.12.2",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

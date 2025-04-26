@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
   .setName("kill")
   .setDescription("Kill the bot")
 
-export async function run({interaction, client}: SlashCommandProps) {
+export async function run({ interaction, client }: SlashCommandProps) {
   interaction.client.destroy();
   client.destroy();
   process.exit(0);
