@@ -35,7 +35,10 @@ class MainConfigManager {
 
   public async updateCache(): Promise<void> {
     const updatedConfig = await MainConfig.findOne();
-    if (!updatedConfig) throw "ERR_NO_MAINCONFIG";
+    if (!updatedConfig) {
+      console.error("ERR_NO_MAINCONFIG");
+      process.exit(9);
+    };
     this.configCache = updatedConfig;
   }
 

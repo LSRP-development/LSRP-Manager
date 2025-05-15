@@ -15,7 +15,7 @@ export function run({ interaction }: SlashCommandProps) {
   const input = interaction.options.getString("input", true);
   interaction.reply({ flags: "Ephemeral", content: "ok" });
   if (interaction.channel && interaction.channel?.isTextBased() && interaction.channel.isSendable()) {
-    interaction.channel.send({ content: input });
+    interaction.channel.send({ content: input }).catch(console.log);
   }
 }
 

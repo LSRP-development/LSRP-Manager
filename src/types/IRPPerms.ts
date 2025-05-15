@@ -4,19 +4,22 @@ import { uuid } from "./uuid";
 export default interface IRPPerms {
   ID: uuid;
   actionBy: Snowflake;
+  /**
+   * Unix ms format of when the perms start and end
+   */
   time: {
-    executed: string;
-    ends: string;
+    executed: number;
+    ends: number;
   }
   /**
-   * Whether the perms are active
+   * Whether the perms are active; defaults to true
    */
-  active: boolean;
+  active?: boolean;
   /**
-   * Member who received the perms
-   * Roblox ID
+   * Members who received the perms
+   * Roblox IDs
    */
-  member: number;
+  members: number[];
   /**
    * The RP type
   */

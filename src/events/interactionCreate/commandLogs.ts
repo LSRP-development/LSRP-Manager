@@ -8,16 +8,22 @@ export default async function (interaction: Interaction, client: Client<true>) {
   if (!interaction.isChatInputCommand()) return;
   const channelID = interaction.channel ? interaction.channel.id : "UNKNOWN";
 
-  const subcommand = interaction.options.getSubcommand();
-  const subcommandGroup = interaction.options.getSubcommandGroup();
+  let subcommand: null | string = null;
+  try {
+    subcommand = interaction.options.getSubcommand();
+  } catch (e) { };
+  const subcommandGroup = interaction.options?.getSubcommandGroup();
 
   const commandName = `${interaction.commandName}${subcommandGroup ? " " + subcommandGroup : ""}${subcommand ? " " + subcommand : ""}`;
+
+  const time = Math.floor(Date.now() / 1000);
 
   const logEmbed = new EmbedBuilder()
     .setTitle("Command ran")
     .setDescription(
       `**Name:** ${commandName}\n` +
       `**Ran by:** ${interaction.user.username} (${interaction.user.id}\n` +
+      `**Timestamp:** <t:${time}:R> <t:${time}:T>\n` +
       `**Channel:** <#${channelID}> (${channelID})\n` +
       `**Guild:** ${interaction.guild.name} (${interaction.guild.id})\n` +
       `**Options:**\n`
