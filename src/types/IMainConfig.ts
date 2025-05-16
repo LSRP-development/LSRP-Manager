@@ -16,8 +16,10 @@ export default interface IMainConfig {
    * How long should the bot wait on top of lifetime before deleting perm message; in milliseconds
   */
   rpPermsMessageDeleteDelay: number;
+  suggestionUpvoteTreshold: number;
   channels: {
     suggestions: Snowflake;
+    mgmtSuggestionNotifications: Snowflake;
     rpPerms: Snowflake;
   }
   roles: {

@@ -6,16 +6,7 @@ export const SSuggestion = new Schema<ISuggestion>({
   messageID: { type: String, required: true },
   content: { type: String, required: true },
   author: { type: String, required: true },
-  votes: {
-    type: {
-      up: { type: [{ type: String }], required: true, },
-      down: { type: [{ type: String }], required: true, },
-    },
-    default: {
-      up: [],
-      down: []
-    }
-  },
+  votes: { type: Map, of: String, default: null },
   approvalStatus: { type: String, default: null },
   actionBy: { type: String, default: null }
 })

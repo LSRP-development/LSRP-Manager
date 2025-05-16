@@ -6,10 +6,7 @@ export default interface ISuggestion {
   messageID: Snowflake;
   content: string;
   author: Snowflake;
-  votes?: {
-    up: Snowflake[];
-    down: Snowflake[];
-  };
+  votes?: Map<Snowflake, "up" | "down">;
   /**
     * "approved" - Approved
     * "denied" - Denied

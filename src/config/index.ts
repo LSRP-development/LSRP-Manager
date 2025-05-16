@@ -101,4 +101,4 @@ export async function updateConfigCaches() {
   await departmentsManager.updateCache();
 }
 
-export default dev_config;
+export default config;

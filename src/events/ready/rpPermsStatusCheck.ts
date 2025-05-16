@@ -55,7 +55,7 @@ export default async function (client: Client<true>) {
 
     const row = new ActionRowBuilder<ButtonKit>().addComponents(invalidateButton);
 
-    const message = await permsChannel.send({ embeds: [embed], components: [row] });
+    const message = await permsChannel.send({ embeds: [embed], components: [row], content: playerUsers.join(" ") });
 
     invalidateButton
       .onClick(

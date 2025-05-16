@@ -10,7 +10,7 @@ export const data = new SlashCommandBuilder()
     .setDescription("Logs roleplay permissions for a Roblox player")
     .addStringOption(o => o
       .setName("players")
-      .setDescription("The player/players to grant the perms (separate with semicolons or spaces if multiple)")
+      .setDescription("The player/players to grant the perms (separate with spaces if multiple)")
       .setRequired(true)
     )
     .addStringOption(o => o

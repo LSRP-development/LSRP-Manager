@@ -7,9 +7,11 @@ export const SMainConfig = new Schema<IMainConfig>({
   devOnlyMode: { type: Boolean, required: true },
   rpPermsLifetime: { type: Number, required: true },
   rpPermsMessageDeleteDelay: { type: Number, required: true },
+  suggestionUpvoteTreshold: { type: Number, required: true },
   channels: {
     type: {
       suggestions: { type: String, required: true },
+      mgmtSuggestionNotifications: { type: String, required: true },
       rpPerms: { type: String, required: true },
     },
     required: true

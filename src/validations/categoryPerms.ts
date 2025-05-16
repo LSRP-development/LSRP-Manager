@@ -19,6 +19,22 @@ export default function ({ interaction, handler, commandObj }: ValidationProps):
     return false;
   }
 
+  if (commandOptions?.skipCategoryPermsSubcommands && (interaction.isChatInputCommand() || interaction.isAnySelectMenu())) {
+    let subcommand: null | string = null;
+    try {
+      subcommand = interaction.options.getSubcommand();
+    } catch (e) { };
+    const subcommandGroup = interaction.options?.getSubcommandGroup();
+
+    for (const sc of commandOptions.skipCategoryPermsSubcommands) {
+      if (sc.subcommand === subcommand) {
+        if (sc.group) {
+          if (sc.group === subcommandGroup) return false;
+        } else return false;
+      }
+    }
+  }
+
   let neededRoles: Array<Snowflake> | undefined;
   switch (commandCategory) {
     case "dev":

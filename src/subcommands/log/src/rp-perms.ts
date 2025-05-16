@@ -8,11 +8,14 @@ import { RPPerms } from "../../../schemas/RPPerms";
 import robloxApiWrapper from "../../../wrappers/robloxApiWrapper";
 import getCommandSuccessEmbed from "../../../utils/getCommandSuccessEmbed";
 import { config } from "dotenv";
+import getCommandLoadingEmbed from "../../../utils/getCommandLoadingEmbed";
 
 export default async function ({ interaction }: SlashCommandProps) {
   await interaction.deferReply({ flags: "Ephemeral" });
   const playersString = interaction.options.getString("players", true);
   const roleplay = interaction.options.getString("roleplay", true);
+
+  await interaction.editReply({ embeds: [getCommandLoadingEmbed("Finding players...")] });
 
   const players = splitPlayerString(playersString);
   const playerUsers = (await robloxApiWrapper.getIdsFromUsernames(players));
@@ -55,17 +58,12 @@ export default async function ({ interaction }: SlashCommandProps) {
 
   const embed = new EmbedBuilder()
     .setTitle("Roleplay permissions")
-    // .setDescription(
-    //   `**Perms by:** <@!${interaction.user.id}> (${interaction.user.username})\n` +
-    //   `**Players:** ${players.join(", ")}\n` +
-    //   `**Roleplay:** ${roleplay}\n` +
-    //   `**Time executed:** <t:${Math.floor(executed / 1000)}:t>\n` +
-    //   `**Ends at:** <t:${Math.floor(ends / 1000)}:t> <t:${Math.floor(ends / 1000)}:R>`
-    // )
     .addFields(fields)
     .setFooter({ text: `ID: ${permsID}` })
     .setColor("Green");
 
+
+  await interaction.editReply({ embeds: [getCommandLoadingEmbed("Saving in database...")] });
 
   const doc = await RPPerms.create({
     ID: permsID,
@@ -78,6 +76,7 @@ export default async function ({ interaction }: SlashCommandProps) {
     }
   })
 
+  await interaction.editReply({ embeds: [getCommandLoadingEmbed("Sending messages...")] });
 
   const invalidateButton = new ButtonKit()
     .setCustomId(uuid())
@@ -86,7 +85,7 @@ export default async function ({ interaction }: SlashCommandProps) {
 
   const row = new ActionRowBuilder<ButtonKit>().addComponents(invalidateButton);
 
-  const message = await channel.send({ embeds: [embed], components: [row] });
+  const message = await channel.send({ embeds: [embed], components: [row], content: playerNames.join(" ") });
 
   invalidateButton
     .onClick(
