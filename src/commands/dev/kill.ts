@@ -9,7 +9,7 @@ export const data = new SlashCommandBuilder()
 export async function run({ interaction, client }: SlashCommandProps) {
   interaction.client.destroy();
   client.destroy();
-  process.exit(0);
+  console.log("Destroyed the client");
 }
 
 export const options: CustomCommandOptions = {
