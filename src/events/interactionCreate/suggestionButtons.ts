@@ -27,6 +27,11 @@ export default async function (interaction: Interaction, client: Client<true>) {
 
   let userCurrentVote: "up" | "down" | null = document.votes?.get(interaction.user.id) ?? null;
 
+  if (document.author === interaction.user.id && userCurrentVote !== vote) {
+    await interaction.followUp({ content: "You cannot vote for your own suggestion", flags: "Ephemeral" });
+    return;
+  }
+
   const votesMap = document.votes ?? new Map<Snowflake, "up" | "down">;
 
   if (vote === userCurrentVote) {
