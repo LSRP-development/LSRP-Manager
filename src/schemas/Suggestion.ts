@@ -5,6 +5,7 @@ export const SSuggestion = new Schema<ISuggestion>({
   ID: { type: String, required: true },
   messageID: { type: String, required: true },
   content: { type: String, required: true },
+  attachmentURL: { type: String, default: null },
   author: { type: String, required: true },
   votes: { type: Map, of: String, default: null },
   approvalStatus: { type: String, default: null },
