@@ -5,6 +5,7 @@ export default interface ISuggestion {
   ID: uuid;
   messageID: Snowflake;
   content: string;
+  attachmentURL?: string;
   author: Snowflake;
   votes?: Map<Snowflake, "up" | "down">;
   /**

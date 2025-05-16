@@ -9,6 +9,12 @@ import Suggestions from "../../../schemas/Suggestion";
 export default async function ({ interaction }: SlashCommandProps) {
   await interaction.deferReply({ flags: "Ephemeral" });
   const suggestion = interaction.options.getString("suggestion", true);
+  const attachment = interaction.options.getAttachment("attachment", false);
+
+  if (attachment && !attachment.contentType?.startsWith("image/")) {
+    await interaction.editReply({ embeds: [getCommandFailedToRunEmbed("You can only attach images")] });
+    return;
+  }
 
   const channel = await interaction.client.channels.fetch(mainConfigManager.config.channels.suggestions)
   if (!channel?.isSendable()) {
@@ -34,6 +40,11 @@ export default async function ({ interaction }: SlashCommandProps) {
       text: `ID: ${suggestionID}`
     })
 
+  if (attachment) {
+    embed.setImage(attachment.url);
+  }
+
+
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents([
       new ButtonBuilder({
@@ -56,6 +67,7 @@ export default async function ({ interaction }: SlashCommandProps) {
   await Suggestions.create({
     ID: suggestionID,
     content: suggestion,
+    attachmentURL: attachment?.url ?? null,
     author: interaction.user.id,
     messageID: message.id,
   })

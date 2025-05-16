@@ -80,6 +80,10 @@ export default async function ({ interaction }: SlashCommandProps) {
     })
     .setColor("Red");
 
+  if (document.attachmentURL) {
+    embed.setImage(document.attachmentURL);
+  }
+
   await suggestionMessage.edit({ components: [actionRow], embeds: [embed] }).catch(() => null);
   await interaction.editReply({ embeds: [getCommandSuccessEmbed()] });
 }

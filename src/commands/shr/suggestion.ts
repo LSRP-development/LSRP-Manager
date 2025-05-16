@@ -14,6 +14,10 @@ export const data = new SlashCommandBuilder()
       .setDescription("The suggestion you want to submit.")
       .setRequired(true)
     )
+    .addAttachmentOption(o => o
+      .setName("attachment")
+      .setDescription("An attachment to add to the suggestion")
+    )
   )
   .addSubcommand(s => s
     .setName("approve")
