@@ -9,7 +9,8 @@ const SRPPerms = new Schema<IRPPerms>({
   time: {
     type: {
       executed: { type: Number, required: true },
-      ends: { type: Number, required: true }
+      ends: { type: Number, required: true },
+      invalidated: { type: Number, default: null }
     },
     required: true
   },
