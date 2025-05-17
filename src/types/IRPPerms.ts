@@ -10,6 +10,7 @@ export default interface IRPPerms {
   time: {
     executed: number;
     ends: number;
+    invalidated?: number;
   }
   /**
    * Whether the perms are active; defaults to true
