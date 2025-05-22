@@ -21,8 +21,20 @@ export default interface IMainConfig {
     suggestions: Snowflake;
     mgmtSuggestionNotifications: Snowflake;
     rpPerms: Snowflake;
+    phaseResults: Snowflake;
   }
   roles: {
     staff: Snowflake;
+    MIT: Snowflake;
+    TM: Snowflake;
+    ModTeam: Snowflake;
+    PhaseA: Snowflake;
+    PhaseB: Snowflake;
+    PhaseC: Snowflake;
+  }
+  phases: {
+    phaseA: { min: number, max: number };
+    phaseB: { min: number, max: number };
+    phaseC: { min: number, max: number };
   }
 }
