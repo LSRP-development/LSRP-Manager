@@ -1,5 +1,12 @@
 import { ButtonKit, SlashCommandProps } from "commandkit";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Snowflake, ThreadAutoArchiveDuration } from "discord.js";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  Snowflake,
+  ThreadAutoArchiveDuration,
+} from "discord.js";
 import { v4 as uuid } from "uuid";
 import { mainConfigManager } from "../../../config";
 import getCommandFailedToRunEmbed from "../../../utils/getCommandFailedToRunEmbed";
@@ -12,13 +19,23 @@ export default async function ({ interaction }: SlashCommandProps) {
   const attachment = interaction.options.getAttachment("attachment", false);
 
   if (attachment && !attachment.contentType?.startsWith("image/")) {
-    await interaction.editReply({ embeds: [getCommandFailedToRunEmbed("You can only attach images")] });
+    await interaction.editReply({
+      embeds: [getCommandFailedToRunEmbed("You can only attach images")],
+    });
     return;
   }
 
-  const channel = await interaction.client.channels.fetch(mainConfigManager.config.channels.suggestions)
+  const channel = await interaction.client.channels.fetch(
+    mainConfigManager.config.channels.suggestions,
+  );
   if (!channel?.isSendable()) {
-    await interaction.editReply({ embeds: [getCommandFailedToRunEmbed("Invalid config - suggestion channel invalid")] });
+    await interaction.editReply({
+      embeds: [
+        getCommandFailedToRunEmbed(
+          "Invalid config - suggestion channel invalid",
+        ),
+      ],
+    });
     return;
   }
 
@@ -29,40 +46,51 @@ export default async function ({ interaction }: SlashCommandProps) {
     .addFields([
       {
         name: "Submitted by:",
-        value: `<@!${interaction.user.id}> (\`${interaction.user.id}\`)`
+        value: `<@!${interaction.user.id}> (\`${interaction.user.id}\`)`,
       },
       {
         name: "Suggestion:",
-        value: suggestion
-      }
+        value: suggestion,
+      },
     ])
     .setFooter({
-      text: `ID: ${suggestionID}`
-    })
+      text: `ID: ${suggestionID}`,
+    });
 
   if (attachment) {
     embed.setImage(attachment.url);
   }
 
+  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents([
+    new ButtonBuilder({
+      customId: `sug_up_${suggestionID}`,
+      label: `0 | Upvote`,
+      style: ButtonStyle.Success,
+    }),
+    new ButtonBuilder({
+      customId: `sug_down_${suggestionID}`,
+      label: `0 | Downvote`,
+      style: ButtonStyle.Danger,
+    }),
+    new ButtonBuilder({
+      customId: `sug_myvote_${suggestionID}`,
+      label: `Check my vote`,
+      style: ButtonStyle.Secondary,
+    }),
+  ]);
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents([
-      new ButtonBuilder({
-        customId: `sug_up_${suggestionID}`,
-        label: `0 | Upvote`,
-        style: ButtonStyle.Success
-      }),
-      new ButtonBuilder({
-        customId: `sug_down_${suggestionID}`,
-        label: `0 | Downvote`,
-        style: ButtonStyle.Danger
-      })
-    ]);
-
-
-  const message = await channel.send({ content: `<@!${interaction.user.id}>`, embeds: [embed], components: [actionRow] });
-  message.startThread({ name: suggestion.slice(0, 100), autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek, reason: "Automatically opened thread under a suggestion" })
-    .then(thread => thread.send("Thread opened for discussion!"));
+  const message = await channel.send({
+    content: `<@!${interaction.user.id}>`,
+    embeds: [embed],
+    components: [actionRow],
+  });
+  message
+    .startThread({
+      name: suggestion.slice(0, 100),
+      autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+      reason: "Automatically opened thread under a suggestion",
+    })
+    .then((thread) => thread.send("Thread opened for discussion!"));
 
   await Suggestions.create({
     ID: suggestionID,
@@ -70,7 +98,7 @@ export default async function ({ interaction }: SlashCommandProps) {
     attachmentURL: attachment?.url ?? null,
     author: interaction.user.id,
     messageID: message.id,
-  })
+  });
 
   await interaction.editReply({ embeds: [getCommandSuccessEmbed()] });
 }

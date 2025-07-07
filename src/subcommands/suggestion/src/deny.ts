@@ -83,6 +83,11 @@ export default async function ({ interaction }: SlashCommandProps) {
       style: ButtonStyle.Danger,
       disabled: true,
     }),
+    new ButtonBuilder({
+      customId: `sug_myvote_${document.ID}`,
+      label: `Check my vote`,
+      style: ButtonStyle.Secondary,
+    }),
   ]);
 
   const embed = new EmbedBuilder()
