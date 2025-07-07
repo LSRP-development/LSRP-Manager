@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "cross-env NODE_ENV=development nodemon",
     "build": "commandkit build",
-    "start": "commandkit start"
+    "start": "cross-env NODE_ENV=production commandkit start"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/lodash": "^4.17.16",
+    "cross-env": "^7.0.3",
     "eslint": "^9.22.0",
     "globals": "^16.0.0",
     "nodemon": "^3.1.9",
