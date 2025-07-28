@@ -7,7 +7,9 @@ import getCommandSuccessEmbed from "../../../utils/getCommandSuccessEmbed";
 
 export default async function ({ interaction }: SlashCommandProps) {
   await interaction.deferReply({ flags: "Ephemeral" });
-  await interaction.editReply({ embeds: [getCommandLoadingEmbed("Loading...")] });
+  await interaction.editReply({
+    embeds: [getCommandLoadingEmbed("Loading...")],
+  });
 
   const phase = interaction.options.getString("phase", true);
   const member = interaction.options.getMember("member");
@@ -15,7 +17,13 @@ export default async function ({ interaction }: SlashCommandProps) {
   const notes = interaction.options.getString("notes", false);
 
   if (!member || !(member instanceof GuildMember)) {
-    await interaction.editReply({ embeds: [getCommandFailedToRunEmbed("This person is not a member of this server!")] });
+    await interaction.editReply({
+      embeds: [
+        getCommandFailedToRunEmbed(
+          "This person is not a member of this server!",
+        ),
+      ],
+    });
     return;
   }
 
@@ -35,8 +43,14 @@ export default async function ({ interaction }: SlashCommandProps) {
       break;
     case "phase_c":
       ({ min, max } = mainConfigManager.config.phases.phaseC);
-      rolesToRemove = [mainConfigManager.config.roles.PhaseC, mainConfigManager.config.roles.MIT];
-      rolesToAdd = [mainConfigManager.config.roles.TM, mainConfigManager.config.roles.ModTeam];
+      rolesToRemove = [
+        mainConfigManager.config.roles.PhaseC,
+        mainConfigManager.config.roles.MIT,
+      ];
+      rolesToAdd = [
+        mainConfigManager.config.roles.TM,
+        mainConfigManager.config.roles.ModTeam,
+      ];
       break;
     default:
       return;
@@ -50,23 +64,33 @@ export default async function ({ interaction }: SlashCommandProps) {
     .setTitle(`Phase ${phaseLetter} results.`)
     .setDescription(
       `**Phase:** ${phaseLetter}\n` +
-      `**Trainee:** <@!${member.user.id}>\n` +
-      `**Score:** ${score}/${max}\n` +
-      `**Notes:** ${notes ?? "N/A"}`
-
+        `**Trainee:** <@!${member.user.id}>\n` +
+        `**Score:** ${score}/${max}\n` +
+        `**Notes:** ${notes ?? "N/A"}`,
     )
     .setColor(passed ? "Green" : "Red");
 
-  await interaction.editReply({ embeds: [getCommandLoadingEmbed("Modifying member's roles...")] });
-  await member.roles.add(rolesToAdd);
-  await member.roles.remove(rolesToRemove);
+  if (passed) {
+    await interaction.editReply({
+      embeds: [getCommandLoadingEmbed("Modifying member's roles...")],
+    });
+    await member.roles.add(rolesToAdd);
+    await member.roles.remove(rolesToRemove);
+  }
 
-  await interaction.editReply({ embeds: [getCommandLoadingEmbed("Sending messages...")] });
+  await interaction.editReply({
+    embeds: [getCommandLoadingEmbed("Sending messages...")],
+  });
 
-  const channel = await interaction.client.channels.fetch(mainConfigManager.config.channels.phaseResults);
+  const channel = await interaction.client.channels.fetch(
+    mainConfigManager.config.channels.phaseResults,
+  );
   if (!channel?.isSendable()) return;
 
-  await channel.send({ embeds: [embed], content: `Phase ${phaseLetter} - ${score}/${max} points - ${passed ? "Pass" : "Fail"}` });
+  await channel.send({
+    embeds: [embed],
+    content: `Phase ${phaseLetter} - ${score}/${max} points - ${passed ? "Pass" : "Fail"}`,
+  });
 
   await interaction.editReply({ embeds: [getCommandSuccessEmbed()] });
 }
