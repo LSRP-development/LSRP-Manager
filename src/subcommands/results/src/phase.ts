@@ -89,7 +89,7 @@ export default async function ({ interaction }: SlashCommandProps) {
 
   await channel.send({
     embeds: [embed],
-    content: `Phase ${phaseLetter} - ${score}/${max} points - ${passed ? "Pass" : "Fail"}`,
+    content: `<@!${member.user.id}>`,
   });
 
   await interaction.editReply({ embeds: [getCommandSuccessEmbed()] });
